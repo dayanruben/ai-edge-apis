@@ -142,12 +142,14 @@ def _maven_artifact_impl(ctx):
     ctx.actions.run_shell(
         inputs = [ctx.file.src],
         outputs = [artifact],
+        mnemonic = "MavenArtifactCp",
         command = "cp %s %s" % (ctx.file.src.path, artifact.path),
     )
 
     ctx.actions.run(
         inputs = [pom, metadata, artifact],
         outputs = [ctx.outputs.m2repository],
+        mnemonic = "MavenArtifactPackage",
         arguments = [
             "--group_path=%s" % ctx.attr.group_id.replace(".", "/"),
             "--artifact_id=%s" % ctx.attr.artifact_id,
